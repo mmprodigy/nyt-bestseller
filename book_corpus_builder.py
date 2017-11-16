@@ -20,7 +20,7 @@ end_date = date(2008, 1, 1)
 for single_date in daterange(start_date, end_date):
 	dateParam = single_date.strftime("%Y-%m-%d")
 	for i in range(len(booktypes)):
-		booktype = booktypes[i]
+		bookType = booktypes[i]
 		params = {
 			"api_key" : '0567a6ed99cf46ed8b113b0553378413',
 			"date" : dateParam,
@@ -30,7 +30,7 @@ for single_date in daterange(start_date, end_date):
 		try:
 			resp = requests.get(url=url, params=params)
 			data = json.loads(resp.text)
-            sleep(.2)
+			sleep(.2)
 		except ValueError:
 			print("oh no, value error!")
 			continue
