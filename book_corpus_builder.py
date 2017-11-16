@@ -3,7 +3,7 @@ from datetime import timedelta, date
 from sets import Set
 from time import sleep
 
-text_file = open("book-corpus1.txt", "w")
+text_file = open("book-corpus-august19th.txt", "w")
 
 url = 'https://api.nytimes.com/svc/books/v3/lists.json'
 
@@ -13,14 +13,18 @@ def daterange(start_date, end_date):
 	for n in range(int ((start_date - end_date).days)):
 		yield start_date - timedelta(n)
 booktypes = ["combined-print-and-e-book-fiction", "advice-how-to-and-miscellaneous", "childrens-middle-grade-e-book", "childrens-middle-grade-hardcover", "childrens-middle-grade-paperback","picture-books","series-books","young-adult-e-book","young-adult-hardcover","young-adult-paperback" ]
-
-start_date = date(2017, 11, 15)
+dateCounter = 0
+start_date = date(2017, 8, 19)
 #end_date = date(2017, 11,14)
 #start_date = date(2017, 11, 15)
 #end_date = date(2017, 11, 12)
 end_date = date(2008, 1, 1)
 #end_date = date(2016, 11, 15)
 for single_date in daterange(start_date, end_date):
+	dateCounter+=1
+	if dateCounter % 7 != 0:
+		continue
+	dateCounter = 0
 	dateParam = single_date.strftime("%Y-%m-%d")
 	for i in range(len(booktypes)):
 		bookType = booktypes[i]
@@ -45,5 +49,4 @@ for single_date in daterange(start_date, end_date):
 					isbns.add(item["book_details"][0]["primary_isbn10"])
 				else:
 					continue
-
 text_file.close()
