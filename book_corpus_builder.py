@@ -13,7 +13,10 @@ def daterange(start_date, end_date):
 	for n in range(int ((start_date - end_date).days)):
 		yield start_date - timedelta(n)
 booktypes = ["combined-print-and-e-book-fiction", "advice-how-to-and-miscellaneous", "childrens-middle-grade-e-book", "childrens-middle-grade-hardcover", "childrens-middle-grade-paperback","picture-books","series-books","young-adult-e-book","young-adult-hardcover","young-adult-paperback" ]
+
 start_date = date(2017, 11, 15)
+#end_date = date(2017, 11,14)
+#start_date = date(2017, 11, 15)
 #end_date = date(2017, 11, 12)
 end_date = date(2008, 1, 1)
 #end_date = date(2016, 11, 15)
@@ -22,7 +25,7 @@ for single_date in daterange(start_date, end_date):
 	for i in range(len(booktypes)):
 		bookType = booktypes[i]
 		params = {
-			"api_key" : '0567a6ed99cf46ed8b113b0553378413',
+			"api_key" : 'f6d297d56d3d4460a2937a87a5cdcbc1',
 			"date" : dateParam,
 			"list" : bookType
 		}
@@ -37,9 +40,9 @@ for single_date in daterange(start_date, end_date):
 
 		if "results" in data:
 			for item in data["results"]: 
-				if item["isbns"][0]["isbn10"] not in isbns:
+				if item["book_details"][0]["primary_isbn10"] not in isbns:
 					text_file.write(str(item))
-					isbns.add(item["isbns"][0]["isbn10"])
+					isbns.add(item["book_details"][0]["primary_isbn10"])
 				else:
 					continue
 
