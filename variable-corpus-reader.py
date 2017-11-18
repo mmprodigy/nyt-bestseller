@@ -19,9 +19,9 @@ bVariables = [] #List of dicts representing sparce vectors representing books
 for book in dataList:
 	#Create nlp features, right now individual words
 	bookdict = ast.literal_eval(book)
-	'''for key in bookdict.keys():
+	for key in bookdict.keys():
 		if re.match('rank.*',key): bookdict[key] = 0 #zeroing out rank data
-		if re.match('description.*',key):
+		'''if re.match('description.*',key):
 			words = key.split(" ")
 			for w in words[2:]:
 				if w != '':
@@ -89,8 +89,7 @@ for book in trainingB:
 				#FIND INDEX USING fDESCRIPTIONTOI THEN SET TO 1
 				#'''
 
-print len(trainingBMatrix)
-print len(trainingB)
+
 count = 0
 
 for i in range(0, len(trainingBMatrix)):
@@ -107,12 +106,34 @@ for i in range(0, len(trainingBMatrix)):
 		else:
 			index = featureDescriptionToIndex[key]
 			trainingBMatrix[i][index] = 1
-
+testingBMatrix = [[0]*len(uniquenessCheck) for _ in range(len(testingB))]
+for i in xrange(len(testingBMatrix)):
+    for key in testingB[i]:
+        if key in uniquenessCheck:
+            index = featureDescriptionToIndex[key]
+            testingBMatrix[i][index] = 1
 
 #GET THE NUMBER OF FEATURES BY DOING len(uniquenessCheck)
+numNeurons = len(uniquenessCheck) * 2 /3
+layers = [numNeurons] * 30
+nn = MLPRegressor(hidden_layer_sizes = layers,activation = 'tanh', solver = 'sgd',\
+ batch_size= 'auto',learning_rate='constant',  learning_rate_init =0.001,max_iter=200) #adjust parameters if needed, espeically layers, use heuristics in write up
+trained = nn.fit(trainingBMatrix,trainingP)
+
+print "loss: ", trained.loss
+print "parameters: ", trained.get_params(deep=True)
+print trained.score(trainingBMatrix,trainingP)
+v = sum([(t - np.mean(trainingP))**2 for t in trainingP])
+error = (1 - float(trained.score(trainingBMatrix,trainingP)))*v
+print "error: ", error
+se = (1 + float(trained.score(trainingBMatrix,trainingP)))*v
+print "supposed error ", se
 
 
-nn = MLPRegressor(hidden_layer_sizes = (10,10),activation = 'tanh', solver = 'sgd',\
- batch_size= 'auto',learning_rate='constant', learning_rate_init =0.001,max_iter=200) #adjust parameters if needed, espeically layers, use heuristics in write up
-training = nn.fit(trainingBMatrix,trainingP)
-print nn.score(trainingBMatrix,trainingP)
+#Testing dataset
+test = trained.predict(testingBMatrix)
+print trained.score(testingBMatrix, testingP)
+v = sum([(t - np.mean(testingP))**2 for t in testingP])
+print "error: ", (1- float(trained.score(testingBMatrix,testingP)))*v
+print "suppose error: ", (1 + float(trained.score(testingBMatrix,testingP)))*v
+
