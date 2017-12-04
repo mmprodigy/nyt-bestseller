@@ -1,0 +1,14 @@
+from bs4 import BeautifulSoup
+import urllib
+import collections
+
+html = urllib.urlopen('http://www.hawes.com/no1_f_d.htm').read()
+soup = BeautifulSoup(html)
+elem = soup.find_all('b')
+li = []
+for e in elem:
+	if e.find('i'):
+		if e.next_sibling.next_sibling.text[-4:] < '2008':
+			ind = e.next_sibling[4:].find("(")
+			li.append((e.find('i'),e.next_sibling[4:ind],e.next_sibling.next_sibling.text,e.next_sibling.next_sibling.text.split()[0]))
+print li
