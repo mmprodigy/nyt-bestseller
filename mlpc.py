@@ -21,7 +21,7 @@ d = '}), defaultdict(<type "int">, {'
 dataList =  ['{' + e + '}' for e in data.split(d)] #List of strings representing dictionairies/books
 
 bVariables = [] #List of dicts representing sparce vectors representing books
-
+###Outdated update with new data
 for book in dataList:
 	#Create nlp features, right now individual words
 	bookdict = ast.literal_eval(book)
@@ -49,13 +49,6 @@ testingB = []
 testingP = []
 #Replace all this with this
 trainingB, testingB, trainingP, tesingP = train_test_split(bVariables, pVariables)
-'''for i in xrange(len(bVariables)):
-	if random.random() < 0.1:
-		testingB.append(bVariables[i])
-		testingP.append(pVariables[i])
-	else:
-		trainingB.append(bVariables[i])
-		trainingP.append(pVariables[i])'''
 
 '''#Normalization
     scaler = StandardScaler()
@@ -127,19 +120,24 @@ for i in xrange(len(testingBMatrix)):
             index = featureDescriptionToIndex[key]
             testingBMatrix[i][index] = 1
 
-#GET THE NUMBER OF FEATURES BY DOING len(uniquenessCheck)
+#GET THE Total NUMBER OF FEATURES BY DOING len(uniquenessCheck)
+
+
 numNeurons = len(uniquenessCheck) * 2 /3
 layers = [numNeurons] * 30
 nn = MLPClassifier(hidden_layer_sizes = layers,activation = 'tanh', solver = 'adam',\
                   batch_size= 'auto',learning_rate='constant',  learning_rate_init =0.001,max_iter=500, momentum=0.9,nesterovs_momentum=True, power_t=0.5, random_state=None,tol=0.0001, validation_fraction=0.1, verbose=False, warm_start=False)
+
+
 #adjust parameters if needed, espeically layers, use heuristics in write up
 
 
-trained = nn.fit(trainingBMatrix,trainingP)
 
+predictions= nn.fit(trainingBMatrix,trainingP)
 
-###Confusion matrix confusion_matrix(y_test,predictions)
-#print(classification_report(y_test,predictions)) predictions = mlp.predict(X_test)
+###predictions = nn.predict(testingBMatrix)
+###print confusion_matrix(y_test,predictions)
+print(classification_report(testingP,predictions))
 
 print "loss: ", trained.loss
 print "parameters: ", trained.get_params(deep=True)
@@ -159,10 +157,13 @@ print "supposed error ", se'''
 ''''
 
 
-#Testing dataset
+#Testing dataset'
+
+
+'''
 test = trained.predict(testingBMatrix)
 print trained.score(testingBMatrix, testingP)
 v = sum([(t - np.mean(testingP))**2 for t in testingP])
 print "error: ", (1- float(trained.score(testingBMatrix,testingP)))*v
-print "suppose error: ", (1 + float(trained.score(testingBMatrix,testingP)))*v
+print "suppose error: ", (1 + float(trained.score(testingBMatrix,testingP)))*v'''
 
