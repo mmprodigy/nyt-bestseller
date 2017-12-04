@@ -129,6 +129,8 @@ print "error: ", error
 se = (1 + float(trained.score(trainingBMatrix,trainingP)))*v
 print "supposed error ", se
 
+for coefficient in nn.coefs_:
+	print coefficient
 
 #Testing dataset
 test = trained.predict(testingBMatrix)
@@ -136,4 +138,6 @@ print trained.score(testingBMatrix, testingP)
 v = sum([(t - np.mean(testingP))**2 for t in testingP])
 print "error: ", (1- float(trained.score(testingBMatrix,testingP)))*v
 print "suppose error: ", (1 + float(trained.score(testingBMatrix,testingP)))*v
+
+
 

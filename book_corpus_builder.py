@@ -3,7 +3,7 @@ from datetime import timedelta, date
 from sets import Set
 from time import sleep
 
-text_file = open("book-corpus-august19th.txt", "w")
+text_file = open("book-corpus-2017-dec-to-jan.txt", "w")
 
 url = 'https://api.nytimes.com/svc/books/v3/lists.json'
 
@@ -14,11 +14,12 @@ def daterange(start_date, end_date):
 		yield start_date - timedelta(n)
 booktypes = ["combined-print-and-e-book-fiction", "advice-how-to-and-miscellaneous", "childrens-middle-grade-e-book", "childrens-middle-grade-hardcover", "childrens-middle-grade-paperback","picture-books","series-books","young-adult-e-book","young-adult-hardcover","young-adult-paperback" ]
 dateCounter = 0
-start_date = date(2017, 8, 19)
+start_date = date(2017, 12, 3)
+#start_date = date(2017, 8, 19)
 #end_date = date(2017, 11,14)
 #start_date = date(2017, 11, 15)
 #end_date = date(2017, 11, 12)
-end_date = date(2008, 1, 1)
+end_date = date(2017, 1, 15)
 #end_date = date(2016, 11, 15)
 for single_date in daterange(start_date, end_date):
 	dateCounter+=1
@@ -29,7 +30,7 @@ for single_date in daterange(start_date, end_date):
 	for i in range(len(booktypes)):
 		bookType = booktypes[i]
 		params = {
-			"api_key" : 'f6d297d56d3d4460a2937a87a5cdcbc1',
+			"api_key" : 'c4e4b8dd0ae94655a67d7228091f3fc5', #Alice's API Key
 			"date" : dateParam,
 			"list" : bookType
 		}
