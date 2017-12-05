@@ -60,6 +60,8 @@ for book in dataList:
 		booklist = []
 		continue
 	newlist = []
+	if len(booklist) != 15 :
+		continue
 	newlist.append(booklist[2]) # page num 0
 	newlist.append(booklist[10]) # av rating 1
 	newlist.append(booklist[11]) # rating count2
@@ -72,7 +74,9 @@ for book in dataList:
 
 	### popular selves
 	selves = collections.defaultdict()
+	#print booklist[12]
 	for item in booklist[12]:
+		#print("item is:", item)
 		selves[item[0]] = item[1]
 	### description 
 	description = collections.defaultdict()
@@ -84,7 +88,7 @@ for book in dataList:
 	### reviews
 	wc = 0
 	bigram = collections.defaultdict()
-	if booklist[13] != [] :
+	if len(booklist[13])>0:
 		for review in booklist[13]:
 			words = review.split()
 			wc += len(words) #word count 3
@@ -122,6 +126,9 @@ uniquenessCheck = set()
 
 count = 0
 
+
+
+
 for i in range(len(bVariables)):
 	for j in range(0,5):
 		bMatrix[i].append(bVariables[i][j]) ##Add in continuous features
@@ -142,6 +149,10 @@ for i in range(len(bVariables)):
 				bMatrix[i][index] = 0
 			else:
 				bMatrix[i][index] = bVariables[i][j][key]
+
+print("checking length")
+for row in bMatrix:
+	print(len(row))
 
 #print bMatrix
 #print len(bMatrix[0])
