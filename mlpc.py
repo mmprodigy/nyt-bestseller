@@ -10,7 +10,7 @@ import matplotlib
 
 #Converts a text file to a python list of default dictionairies representing books
 
-with open('feature-extractor-outputold.txt', 'r') as myfile:
+with open('extractedfeatures.txt', 'r') as myfile:
 	data = myfile.read()
 
 
