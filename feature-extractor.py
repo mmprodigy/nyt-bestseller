@@ -21,7 +21,7 @@ with open(INPUT_FILE, 'r') as myfile:
 feature_data = open(OUTPUT_FILE, 'w')
 
 
-d = '<book>'
+d = '</GoodreadsResponse>'
 dataList =  data.split(d) #List of strings representing dictionairies/books
 
 
