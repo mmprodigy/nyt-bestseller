@@ -12,9 +12,9 @@ import json, requests
 '''
 
 # FILL IN THIS WITH YOUR INPUT FILE. THIS SHOULD BE IN THE SAME DIRECTORY AS feature_extractor.py
-INPUT_FILE = 'nytGR_output_tot.txt'
+INPUT_FILE = 'nytGRcorpus.txt'
 # THIS IS THE OUTPUT FILE AND DOES NOT NEED TO BE CHANGED.
-OUTPUT_FILE = 'feature-extractor-output3.txt'
+OUTPUT_FILE = 'feature-extractor-outputhalf.txt'
 
 
 # opens input file
@@ -24,7 +24,7 @@ feature_data = open(OUTPUT_FILE, 'a')
 
 
 d = '</GoodreadsResponse>'
-dataList =  data.split(d)[2000:3000] #List of strings representing dictionairies/books
+dataList =  data.split(d) #List of strings representing dictionairies/books
 print len(dataList)
 
 '''

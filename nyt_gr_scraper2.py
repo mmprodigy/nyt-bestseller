@@ -4,42 +4,41 @@ from collections import defaultdict
 
 #input should be [isbn, title, author]
 
-file = open("nytGR_output11.txt", "a")
-isbnList = str(open("nyt_corpus_isbn.txt","r").readlines()).split(',')
-isbnList = isbnList[17+2081+207+83+267+56:]
+file = open("nytGR_outputc3.txt", "a")
+isbnList = open("nyt_corpus_title.txt","r").read().split("), (")
+isbnList = [(i.split(',')[0][1:len(i.split(',')[0])-1],i.split(',')[1][2:len(i.split(',')[1])-1]) for i in isbnList]
 deliminator = "!!!this is a deliminator!!!"
-file.write(deliminator)
-def scrape_review(isbn, file_object):
-	url =  'https://www.goodreads.com/book/isbn/ISBN?format=FORMAT'
-	cherie_key = "BfTf8h3nSb4TgiHUH6EgHA"
-	alice_key = "ExLAAlQU7RC5tq9RXvDIjg"
-	params = {
-				"format" : 'xml',
-				"key" : alice_key,
-				"isbns" : isbn,
-				"text_only" : True
-			}
-	resp = requests.get(url=url, params=params)
-	if len(resp.content) < 1000: return 0
-	file.write(resp.content)
-	file.write(deliminator)
-	return 1
-#		print("oh no, value error!")
+isbnList = isbnList[1000:2000]
+def scrape_review(book, file_object):
+    title = book[1]
+    author = book[0]
+    url =  'https://www.goodreads.com/book/title.xml'
+    cherie_key = "ExLAAlQU7RC5tq9RXvDIjg"
+    alice_key = "BAiZXR4dXM1lFBoRsQ"
+    params = {
+        "format" : 'xml',
+            "key" : cherie_key,
+                "title" : title,
+                "author" : author
+    
+        }
+    resp = requests.get(url=url, params=params)
+    if len(resp.content) < 1000: return 0
+    file.write(resp.content)
+    file.write(deliminator)
+    return 1
 
-
-# example: 
-#test_isbn = "9788700631625"
 i = 0
-for isbn in isbnList:
-#	print("book_id is:", book_id)
-	i += scrape_review(isbn, file)
-#	print("count is: ", i)
-	time.sleep(.9)
-#	print(i, book_id, book.title)
-#	print("cache is:", cache)
-	print("count is:", i)
+for isn in isbnList:
+    
+    i += scrape_review(isn, file)
+    #    print("count is: ", i)
+    time.sleep(.9)
+    #    print("cache is:", cache)
+    print("count is:", i)
 
 
 file.close()
 
- 
+
+
