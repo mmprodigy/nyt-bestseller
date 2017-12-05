@@ -4,18 +4,17 @@ from collections import defaultdict
 
 #input should be [isbn, title, author]
 
-file = open("nytGR_output.txt", "a")
+file = open("nytGR_outputc1.txt", "a")
 isbnList = open("nyt_corpus_title.txt","r").read().split("), (")
-isbnList = [(i.split(',')[0][1:len(i.split(',')[0])-1],i.split(',')[1][1:len(i.split(',')[1])-1]) for i in isbnList]
+isbnList = [(i.split(',')[0][1:len(i.split(',')[0])-1],i.split(',')[1][2:len(i.split(',')[1])-1]) for i in isbnList]
 deliminator = "!!!this is a deliminator!!!"
-
+isbnList = isbnList[0:1000]
 def scrape_review(book, file_object):
-	print book
 	title = book[1]
 	author = book[0]
 	
 	url =  'https://www.goodreads.com/book/title.xml'
-	cherie_key = "DRZpJdOHuw0bM6Y35eiKQ"
+	cherie_key = "ExLAAlQU7RC5tq9RXvDIjg"
 	alice_key = "BAiZXR4dXM1lFBoRsQ"
 	params = {
 				"format" : 'xml',
