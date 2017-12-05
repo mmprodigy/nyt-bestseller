@@ -16,7 +16,7 @@ def scrape_review(isbn, file_object):
 	params = {
 				"format" : 'xml',
 				"key" : alice_key,
-				"isbn" : isbn,
+				"isbns" : isbn,
 				"text_only" : True
 			}
 	resp = requests.get(url=url, params=params)

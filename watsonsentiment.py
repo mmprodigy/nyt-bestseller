@@ -4,10 +4,9 @@ import watson_developer_cloud.natural_language_understanding.features.v1 \
   as Features
 
 #import the dicitionary with all rest of the features 
-
 natural_language_understanding = NaturalLanguageUnderstandingV1(
-  username="username", 
-  password="password",
+  username="cxuhan@stanford.edu",
+  password="Cherry_131",
   version="2017-02-27")
 
 response = natural_language_understanding.analyze(
