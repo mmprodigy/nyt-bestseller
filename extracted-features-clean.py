@@ -3,9 +3,9 @@ from collections import defaultdict
 
 
 #CHANGE THIS FILE TO INPUT FILE 
-INPUT = 'feature-extract-sample-clean-in.txt'
+INPUT = 'extractedfeatures-fixed.txt'
 #"CHANGE THIS TO OUTPUT CLEANED FILE"
-OUTPUT = 'feature-extract-sample-clean-in.txt'
+OUTPUT = 'extractedfeatures-fixed-cleaned.txt'
 
 
 def fix_unicode(a):
@@ -20,8 +20,10 @@ def fix_unicode(a):
 
 d = '!!!!'
 bookct = 0
+not_lit_eval_ct = 0
+not_u_encode_ct = 0
 
-
+wrongoutfile = open('extractedfeatures-fixed-cleaned-w.txt', 'a')
 with open(INPUT, 'r') as infile:
 	with open(OUTPUT, 'a') as outfile:
 		data = infile.read()
@@ -33,9 +35,12 @@ with open(INPUT, 'r') as infile:
 			# NOTE 	text.encode('utf-8') to convert unicode to english text
 
 			# find valid book entries
+
 			try:
 				booklist = ast.literal_eval(book)
 			except:
+				not_lit_eval_ct += 1
+				print("not literal_evaluable: ",  booklist)
 				booklist = []
 				continue
 
@@ -44,6 +49,8 @@ with open(INPUT, 'r') as infile:
 			except UnicodeDecodeError:
 #				print("the failed book is:")
 #				print(booklist)
+				not_u_encode_ct += 1
+				print("failed to convert from unicode: ",  booklist)
 				booklist = []
 				continue
 			except:
@@ -82,7 +89,7 @@ with open(INPUT, 'r') as infile:
 			passed_reviews = []
 #			print("review count is: ", len(reviews))
 			for ct, review in enumerate(reviews):
-				print(ct, "review is: ", review)
+#				print(ct, "review is: ", review)
 				try:
 					review.encode('utf-8').decode('ascii')
 					passed_reviews.append(fix_unicode(review))
@@ -95,8 +102,8 @@ with open(INPUT, 'r') as infile:
 #				print(ct, "review type is: ", type(review.encode('utf-8')))
 #				print(review.encode('utf-8'))
 #				print('\u0' not in review)
-			print(len(passed_reviews), " passed_reviews")
-			print("passed_reviews are: ", passed_reviews)
+#			print(len(passed_reviews), " passed_reviews")
+#			print("passed_reviews are: ", passed_reviews)
 			booklist[13] = passed_reviews
 
 
@@ -105,9 +112,9 @@ with open(INPUT, 'r') as infile:
 
 			
 
-			print("the fixed booklist is: ")
-			print(booklist)
-			outfile.write(str(booklist)+'!!!!')
+#			print("the fixed booklist is: ")
+#			print(booklist)
+#			outfile.write(str(booklist)+'!!!!')
 
 
 			'''
@@ -139,6 +146,8 @@ with open(INPUT, 'r') as infile:
 
 	print("Original Count is: ", len(datalist))
 	print("Final Count is: ", bookct)
+	print("Not Lit Evaluable: ", not_lit_eval_ct)
+	print("Not Unicode Convertable: ", not_u_encode_ct)
 
 	outfile.close()
 infile.close()
