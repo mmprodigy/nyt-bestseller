@@ -30,11 +30,16 @@ The data acquisition portion of this project requires an internet connection alo
 
 * **goodreads-scrape.py** - Script that makes Goodreads API calls similar to nyt\_gr\_scraper.py , except on random non-NYTBestseller books. Output: a text file containing the Goodreads API response for a random set of non-NYT bestseller book. 
 
-* **feature-extractor.py** - Script that takes the output files of goodreads-scrape.py and nyt\_gr\_scraper.py and extracts the relevant book features from the block text within the HTTP response. The output is a text file containing a python list of python lists. Each item in the list corresponds to a book. Each book is represented by a list containing the following information: ```
+* **feature-extractor.py** - Script that takes the output files of goodreads-scrape.py and nyt\_gr\_scraper.py and extracts the relevant book features from the block text within the HTTP response. The output is a text file containing a python list of python lists. Each item in the list corresponds to a book. Each book is represented by a list containing the following information: 
+```
 str(list([book_id, title, num_pages, author, publication_year, publication_month, publication_day, publisher, description, reviews_count, average_rating, ratings_count, popular_shelves,  reviews, bestSeller]))
 ```
 
-* **extracted-features-clean.py** - After concatting all the feature-extractor outputs into one file, there are a lot of words and images that are uninterpretable because they are written with unicode symbols such as: ```u0434\u0430\u0432\u0430\u0439\u0442\u0435 \u0441\u0435\u0431\u044f \u043e\u0434\u0443```. These symbols sometimes denote images used in reviews, non-English languages, or sometimes English. This script removes these large unicode symbol chunks from the the feature-extractor output, or converts the unicode if it was meant to be English text. 
+* **extracted-features-clean.py** - After concatting all the feature-extractor outputs into one file, there are a lot of words and images that are uninterpretable because they are written with unicode symbols such as: 
+```
+u0434\u0430\u0432\u0430\u0439\u0442\u0435 \u0441\u0435\u0431\u044f \u043e\u0434\u0443
+```.
+ These symbols sometimes denote images used in reviews, non-English languages, or sometimes English. This script removes these large unicode symbol chunks from the the feature-extractor output, or converts the unicode if it was meant to be English text. 
 
 * **extractedfeatures-final-clean-subset.txt** - A subset of the data contained in extractedfeatures-final-clean.txt. This text file contains the data for our neural net to run, the meta-data of a little over 6750 books. It is the output of extracted-features-clean.py. This file must be in the same directory as mlpc.py in order to run the neural net.
 
