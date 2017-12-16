@@ -6,16 +6,21 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import classification_report,confusion_matrix
 from sklearn.decomposition import TruncatedSVD
-import matplotlib.pyplot as plt
-import matplotlib
+#import matplotlib.pyplot as plt
+#import matplotlib
 import scipy
+import numpy as np 
 
 #Converts a text file to a python list of default dictionairies representing books
 
 #with open('extractedfeatures.txt', 'r') as myfile:
-with open('extractedfeatures-fixed-cleaned.txt', 'r') as myfile:
+with open('extractedfeatures-final-clean.txt', 'r') as myfile:
 	data = myfile.read()
 
+output = open('final-set-output.txt', 'a')
+
+
+#testset = [i for i in range(0, 6790, 5)]
 
 
 d = ']!!!!['
@@ -52,18 +57,20 @@ d = ']!!!!['
 	
 	'''
 
-BOOK_LIMIT = 500
+#BOOK_LIMIT = 100000
+
+
 
 
 dataList =  [e for e in data.split(d)] #List of strings representing dictionairies/books
 bVariables = [] #List of dicts representing sparce vectors representing books
 pVariables = []
 bookct = 0
-for ct, book in enumerate(dataList):
-#	print(book)
+for book in dataList:
+#        book = dataList[idx]
 #	quit()
-	if ct > BOOK_LIMIT: 
-		break
+#	if ct > BOOK_LIMIT: 
+#		break
 #	print("book is: ", book)
 	#Create nlp features, right now individual words
 	try:
@@ -230,16 +237,20 @@ for i in range(len(bMatrix)):
 #			quit()
 		'''
 
-print("first row is: ", bMatrix[0])
-print("second row is: ", bMatrix[1])
+#print("first row is: ", bMatrix[0])
+#print("second row is: ", bMatrix[1])
 
 
 tsvd = TruncatedSVD(n_components=110)
-X_sparse = scipy.sparse.csr_matrix(bVariables)
+n_matrix = np.matrix(bMatrix)
+X_sparse = scipy.sparse.csr_matrix(n_matrix)
 X_sparse_tsvd = tsvd.fit_transform(X_sparse)
-
-
-
+print("Created!")
+print('Original number of features:' + str(X_sparse.shape[1]))
+print('Reduced number of features:' + str(X_sparse_tsvd.shape[1]))
+#quit()
+output.write('Original number of features:' + str( X_sparse.shape[1]))
+output.write('Reduced number of features:' + str(X_sparse_tsvd.shape[1]))
 
 #print()
 #print len(bMatrix[0])
@@ -252,22 +263,29 @@ testingP = []
 #Replace all this with this
 #bMatrix = np.array(bMatrix, dtype='float32')
 #pVariables = np.array(pVariables)
+
+
 print("bMatrix length is: ", len(bMatrix))
 print("bMatrix[0] length is: ", len(bMatrix[0]))
 
-print('Original number of features:', bMatrix.shape[1])
-print('Reduced number of features:', X_sparse_tsvd.shape[1])
+output.write("bMatrix length is: " + str(len(bMatrix)))
+output.write("bMatrix[0] length is: " + str(len(bMatrix[0])))
 
 
 trainingB, testingB, trainingP, testingP = train_test_split(X_sparse_tsvd, pVariables, test_size=0.50)
-print("type of trainingB[0][0] is: ", type(trainingB[0][0]))
-print("type of trainingP[0] is: ", type(trainingP[0]))
-
-
-
+#print("type of trainingB[0][0] is: ", type(trainingB[0][0]))
+#print("type of trainingP[0] is: ", type(trainingP[0]))
 #print(pVariables)
 
 
+output.write("trainingB is: ")
+output.write(str(trainingB))
+output.write("testingB is: ")
+output.write(str(testingB))
+output.write("trainingP is: ")
+output.write(str(trainingP))
+output.write("testingP is: ")
+output.write(str(testingP))
 print("trb is: ", trainingB )
 print("teb is: ", testingB)
 print("trp is: ", trainingP)
@@ -297,6 +315,13 @@ print("len teb is: ", len(testingB))
 print("len trp is: ", len(trainingP))
 print("len tep is: ", len(testingP))
 
+output.write("len trb is: " + str(len(trainingB)))
+output.write("len teb is: " + str(len(testingB)))
+output.write("len trp is: " + str(len(trainingP)))
+output.write("len tep is: " + str(len(testingP)))
+
+
+
 
 #adjust parameters if needed, espeically layers, use heuristics in write up
 
@@ -315,9 +340,26 @@ testing_pred = trained.predict(testingB)
 print(classification_report(testingP,testing_pred))
 print("testing_pred is: ", testing_pred )
 
-print "loss: ", classification_report.loss
-print "parameters: ", trained.get_params(deep=True)
-print trained.score(trainingB,trainingP)
+output.write(str(classification_report(testingP,testing_pred)))
+output.write("testing_pred is: " + str(testing_pred ))
+
+#quit()
+
+print "Loss: ", trained.loss
+print "Parameters: ", trained.get_params(deep=True)
+print "Trained Score: ", trained.score(trainingB,trainingP)
+print "Weights are: "
+for coeff in nn.coefs_:
+        print coeff
+output.write( "Loss: " + str( trained.loss))
+output.write( "Parameters: " + str( trained.get_params(deep=True)))
+output.write( "Trained Score: " + str(trained.score(trainingB,trainingP)))
+output.write( "Weights are: ")
+for coeff in nn.coefs_:
+        output.write(coeff)
+
+output.close()
+
 '''v = sum([(t - np.mean(trainingP))**2 for t in trainingP])
 error = (1 - float(trained.score(trainingBMatrix,trainingP)))*v
 print "error: ", error
