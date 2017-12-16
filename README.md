@@ -44,7 +44,7 @@ u0434\u0430\u0432\u0430\u0439\u0442\u0435 \u0441\u0435\u0431\u044f \u043e\u0434\
 
 * **extractedfeatures-final-clean-subset.txt** - A subset of the data contained in extractedfeatures-final-clean.txt. This text file contains the data for our neural net to run, the meta-data of a little over 6750 books. It is the output of extracted-features-clean.py. This file must be in the same directory as mlpc.py in order to run the neural net.
 
-* **mlpc.py** - Script that takes the output of extracted-features-clean.txt and runs the neural net. It iterates through each book represented in the file and 
+* **mlpc.py** - Script that takes the output of extracted-features-clean.txt and runs the neural net. It iterates through each book represented in the file and generates more features using the description and reviews of the book. After that, we use a python list of python lists to build our sparce vector matrix. We then convert it to a CSR matrix in order to use SciKit-Learn's Truncated SVD package to reduce the number of features and decrease run time. This script considers half the data as training data and half as testing data. It prints the results of the neural net, including score, loss, and the training weights. 
 
 
 
@@ -54,6 +54,8 @@ The codebase contains several scripts for generating intermediary files. However
 
 ```
 python mlpc.py
+#or
+python mlpc.py > outputfile.txt
 ```
 
 And then it will train and test using the data provided in extractedfeatures-final-clean-subset.txt.
